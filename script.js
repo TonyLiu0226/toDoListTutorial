@@ -1,26 +1,86 @@
-// STEP 1: Select elements from the page
+// --- DOM Elements ---
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
+const clearBtn = document.getElementById("clearBtn");
 const taskList = document.getElementById("taskList");
 
-// STEP 2: Listen for button click
-addBtn.addEventListener("click", addTask);
+// --- State ---
+let tasks = loadTasks();
 
-// STEP 3: Create the addTask function
-function addTask() {
-  // Get the input value
-  const taskText = taskInput.value;
+// --- Initial Render ---
+renderTasks();
 
-  // TODO: Prevent empty tasks
+// --- Events ---
+addBtn.addEventListener("click", handleAddTask);
 
-  // TODO: Create a new <li> element
+taskInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") handleAddTask();
+});
 
-  // TODO: Set the text of the <li>
+clearBtn.addEventListener("click", () => {
+  tasks = [];
+  saveTasks();
+  renderTasks();
+});
 
-  // TODO: Add click behavior to remove the task
+// --- Functions ---
+function handleAddTask() {
+  const text = taskInput.value.trim();
+  if (text === "") return;
 
-  // TODO: Add the <li> to the task list
+  const newTask = {
+    id: crypto.randomUUID(), // simple unique id
+    text,
+    completed: false,
+  };
 
-  // Clear the input
+  tasks.push(newTask);
+  saveTasks();
+  renderTasks();
+
   taskInput.value = "";
+  taskInput.focus();
+}
+
+function renderTasks() {
+  taskList.innerHTML = "";
+
+  for (const task of tasks) {
+    const li = document.createElement("li");
+    if (task.completed) li.classList.add("completed");
+
+    const span = document.createElement("span");
+    span.className = "task-text";
+    span.textContent = task.text;
+
+    // Toggle complete on click
+    span.addEventListener("click", () => {
+      task.completed = !task.completed;
+      saveTasks();
+      renderTasks();
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-btn";
+    deleteBtn.textContent = "Delete";
+
+    deleteBtn.addEventListener("click", () => {
+      tasks = tasks.filter((t) => t.id !== task.id);
+      saveTasks();
+      renderTasks();
+    });
+
+    li.appendChild(span);
+    li.appendChild(deleteBtn);
+    taskList.appendChild(li);
+  }
+}
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const raw = localStorage.getItem("tasks");
+  return raw ? JSON.parse(raw) : [];
 }
