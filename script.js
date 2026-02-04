@@ -47,7 +47,7 @@ function renderTasks() {
 
   for (const task of tasks) {
     const li = document.createElement("li");
-    if (task.completed) li.classList.add("completed");
+    if (task.completed) li.classList.add("completed"); //optional functionality, crosses out task item on completion
 
     const span = document.createElement("span");
     span.className = "task-text";
@@ -55,7 +55,7 @@ function renderTasks() {
 
     // Toggle complete on click
     span.addEventListener("click", () => {
-      task.completed = !task.completed;
+      task.completed = !task.completed; //if implement completion functionality
       saveTasks();
       renderTasks();
     });
@@ -76,11 +76,11 @@ function renderTasks() {
   }
 }
 
-function saveTasks() {
+function saveTasks() { //optional functionality to persist tasks
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function loadTasks() {
+function loadTasks() { //optional functionality to load tasks from localStorage
   const raw = localStorage.getItem("tasks");
   return raw ? JSON.parse(raw) : [];
 }

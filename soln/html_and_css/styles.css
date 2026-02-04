@@ -66,8 +66,7 @@ body {
     cursor: pointer;
   }
   
-  li.completed .task-text { 
-    /* implement this styling for optional functionality to cross out task item on completion */
+  li.completed .task-text {
     text-decoration: line-through;
     opacity: 0.6;
   }
