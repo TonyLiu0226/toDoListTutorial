@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS Event Listener Demo</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      #output {
+        margin-top: 15px;
+        font-size: 18px;
+        color: blue;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>JavaScript Event Listener Demo</h1>
+
+    <label>
+      Enter your name:
+      <input type="text" id="nameInput" />
+    </label>
+
+    <br><br>
+
+    <button id="btn">Click Me</button>
+
+    <p id="output">Waiting for input...</p>
+
+    <script>
+        // inline script for demo purposes
+      const button = document.getElementById("btn");
+      const input = document.getElementById("nameInput");
+      const output = document.getElementById("output");
+
+      button.addEventListener("click", function () {
+        const name = input.value;
+
+        if (name === "") {
+          output.innerText = "You didn't type anything 😢";
+          output.style.color = "red";
+        } else {
+          output.innerText = "Hello, " + name + " 👋";
+          output.style.color = "green";
+        }
+      });
+
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          console.log("Enter key pressed");
+        }
+        if (e.key === "Escape") {
+            const p = document.createElement("p");
+            p.textContent = "You pressed Escape";
+            document.body.appendChild(p);
+        }
+      })
+    </script>
+  </body>
+</html>
